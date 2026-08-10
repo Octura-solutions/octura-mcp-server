@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.octurasolutions/site-tools",
+  "title": "Octura Solutions Site Tools",
+  "description": "Deterministic Odoo ERP calculators: implementation cost, ROI, TCO, tax, payroll, inventory.",
+  "version": "1.0.0",
+  "websiteUrl": "https://octurasolutions.com/tools/mcp-server",
+  "icons": [
+    {
+      "src": "https://octurasolutions.com/android-chrome-512x512.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://octurasolutions.com/mcp"
+    }
+  ]
+}
