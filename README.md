@@ -45,6 +45,32 @@ Any client that reads a JSON config:
 The server is stateless and tools-only. It implements `initialize`, `ping`, `tools/list` and
 `tools/call`; it advertises no resources and no prompts.
 
+### If your client only speaks stdio
+
+Most clients handle remote HTTP directly and should use the config above. For older ones that
+only support stdio, this repo ships a bridge:
+
+```bash
+npx octura-mcp-server
+```
+
+```json
+{
+  "mcpServers": {
+    "octura": {
+      "command": "npx",
+      "args": ["-y", "octura-mcp-server"]
+    }
+  }
+}
+```
+
+Or with Docker, `docker build -t octura-mcp . && docker run -i --rm octura-mcp`.
+
+The bridge is a pipe: it POSTs whatever arrives on stdin to the endpoint and writes the reply
+back. It has no dependencies and it does not restate the tool list or any schema, so it cannot
+drift out of sync with the server. Point it elsewhere with `OCTURA_MCP_URL`.
+
 ## A worked example
 
 ```bash
@@ -135,9 +161,13 @@ filing advice from an accountant.
 
 ## About this repository
 
-This repo is the public home of the server: the README you are reading and a copy of the
-published `server.json` registry manifest. The server itself runs inside the Octura Solutions
-website, whose source is private, so there is no server code here to run or fork.
+This repo is the public home of the server: this README, a copy of the published `server.json`
+registry manifest, and the stdio bridge described above. The calculators themselves run inside
+the Octura Solutions website, whose source is private, so what you can build and run here is
+the bridge rather than the tools.
+
+Run the bridge's tests with `npm test`. They use a local stand-in for the endpoint, so they
+pass with no network access.
 
 Details on the server, including the full tool list with input schemas, are at
 [octurasolutions.com/tools/mcp-server](https://octurasolutions.com/tools/mcp-server).

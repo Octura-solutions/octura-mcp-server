@@ -1,0 +1,38 @@
+{
+  "name": "octura-mcp-server",
+  "version": "1.0.0",
+  "description": "stdio bridge to the Octura Solutions MCP server: 24 deterministic Odoo ERP calculators",
+  "type": "module",
+  "bin": {
+    "octura-mcp-server": "src/bridge.mjs"
+  },
+  "main": "src/bridge.mjs",
+  "files": [
+    "src",
+    "server.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node src/bridge.mjs",
+    "test": "node --test test/bridge.test.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "odoo",
+    "erp",
+    "calculator",
+    "roi",
+    "sales-tax"
+  ],
+  "license": "MIT",
+  "homepage": "https://octurasolutions.com/tools/mcp-server",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Octura-solutions/octura-mcp-server.git"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
