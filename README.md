@@ -51,7 +51,7 @@ Most clients handle remote HTTP directly and should use the config above. For ol
 only support stdio, this repo ships a bridge:
 
 ```bash
-npx octura-mcp-server
+npx -y github:Octura-solutions/octura-mcp-server
 ```
 
 ```json
@@ -59,13 +59,16 @@ npx octura-mcp-server
   "mcpServers": {
     "octura": {
       "command": "npx",
-      "args": ["-y", "octura-mcp-server"]
+      "args": ["-y", "github:Octura-solutions/octura-mcp-server"]
     }
   }
 }
 ```
 
 Or with Docker, `docker build -t octura-mcp . && docker run -i --rm octura-mcp`.
+
+(It runs from this repo rather than an npm package name, because the bridge is not published to
+npm. If that changes, the shorter `npx -y octura-mcp-server` will work too.)
 
 The bridge is a pipe: it POSTs whatever arrives on stdin to the endpoint and writes the reply
 back. It has no dependencies and it does not restate the tool list or any schema, so it cannot
