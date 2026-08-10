@@ -67,8 +67,27 @@ npx -y github:Octura-solutions/octura-mcp-server
 
 Or with Docker, `docker build -t octura-mcp . && docker run -i --rm octura-mcp`.
 
-(It runs from this repo rather than an npm package name, because the bridge is not published to
-npm. If that changes, the shorter `npx -y octura-mcp-server` will work too.)
+Python clients can install it from PyPI instead:
+
+```bash
+uvx octura-mcp-server
+```
+
+```json
+{
+  "mcpServers": {
+    "octura": {
+      "command": "uvx",
+      "args": ["octura-mcp-server"]
+    }
+  }
+}
+```
+
+The Node bridge runs from this repo rather than an npm package name, because it is not
+published to npm; the Python one is on [PyPI](https://pypi.org/project/octura-mcp-server/).
+Both are the same pipe with the same behaviour, verified by the same eight tests in each
+language. Pick whichever runtime your client already has.
 
 The bridge is a pipe: it POSTs whatever arrives on stdin to the endpoint and writes the reply
 back. It has no dependencies and it does not restate the tool list or any schema, so it cannot
