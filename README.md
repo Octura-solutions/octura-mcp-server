@@ -1,5 +1,7 @@
 # Octura Solutions Site Tools (MCP server)
 
+[![Octura-solutions/octura-mcp-server MCP server](https://glama.ai/mcp/servers/Octura-solutions/octura-mcp-server/badges/score.svg)](https://glama.ai/mcp/servers/Octura-solutions/octura-mcp-server)
+
 A hosted [Model Context Protocol](https://modelcontextprotocol.io) server exposing 24
 deterministic ERP calculators: Odoo implementation, migration and upgrade costs, ROI and total
 cost of ownership, sales tax for the US, Canada and the EU, Canadian payroll source deductions,
