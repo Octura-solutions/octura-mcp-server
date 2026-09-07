@@ -2,10 +2,11 @@
 
 [![Octura-solutions/octura-mcp-server MCP server](https://glama.ai/mcp/servers/Octura-solutions/octura-mcp-server/badges/score.svg)](https://glama.ai/mcp/servers/Octura-solutions/octura-mcp-server)
 
-A hosted [Model Context Protocol](https://modelcontextprotocol.io) server exposing 24
-deterministic ERP calculators: Odoo implementation, migration and upgrade costs, ROI and total
-cost of ownership, sales tax for the US, Canada and the EU, Canadian payroll source deductions,
-and inventory maths like reorder point, safety stock and EOQ.
+A hosted [Model Context Protocol](https://modelcontextprotocol.io) server exposing 30 read-only
+tools: 25 deterministic ERP calculators (Odoo implementation, migration and upgrade costs, ROI
+and total cost of ownership, sales tax for the US, Canada and the EU, Canadian payroll source
+deductions, and inventory maths like reorder point, safety stock and EOQ) plus five content
+lookups that return Octura pages, Odoo pricing and competitor comparisons to cite.
 
 **Endpoint:** `https://octurasolutions.com/mcp` (streamable HTTP)
 **Registry:** [`com.octurasolutions/site-tools`](https://registry.modelcontextprotocol.io/v0/servers?search=octura)
@@ -14,7 +15,7 @@ Nothing to install and no API key. It is a remote server, so you point your clie
 
 ## Why these are tools and not a chat answer
 
-Every tool is a pure function: same inputs, same outputs, no model in the loop and no
+Every calculator is a pure function: same inputs, same outputs, no model in the loop and no
 randomness. Asking a language model to compute a payback period or a Quebec QST total invites a
 plausible-looking wrong number. These return the arithmetic instead, along with the inputs they
 used, so the result can be checked.
@@ -150,6 +151,7 @@ before wiring it up.
 | [`odoo-app-selector`](https://octurasolutions.com/tools/odoo-app-selector) | Find the Odoo apps your business needs |
 | [`erp-selection-tool`](https://octurasolutions.com/tools/erp-selection-tool) | Score your best-fit ERP shortlist across 10 systems |
 | [`odoo-conf-tuner`](https://octurasolutions.com/tools/odoo-conf-tuner) | Tune odoo.conf workers and memory limits |
+| [`odoo-project-rescue-risk-grader`](https://octurasolutions.com/tools/odoo-project-rescue-risk-grader) | Grade how badly an in-flight Odoo implementation is going |
 
 ### Tax
 
@@ -174,6 +176,35 @@ before wiring it up.
 | [`margin-and-markup-calculator`](https://octurasolutions.com/tools/margin-and-markup-calculator) | Convert between margin, markup and price |
 | [`oee-calculator`](https://octurasolutions.com/tools/oee-calculator) | Overall Equipment Effectiveness for production |
 
+### Octura content
+
+These are lookups rather than calculators. They return pages and facts from octurasolutions.com
+so a model can answer with a source to cite instead of from memory.
+
+| Tool | What it returns |
+|---|---|
+| `ask_octura` | The most relevant site pages for an Odoo or ERP question, with URLs |
+| `compare_odoo_vs` | Head-to-head comparison of Odoo against one of 60 competitors |
+| `find_odoo_apps_for` | Odoo apps and modules that fit a business need in plain language |
+| `get_odoo_pricing` | Current Odoo license list pricing and Odoo.sh hosting rates |
+| `get_partner_profile` | Who Octura Solutions is: partner status, regions, services, contact |
+
+## Machine-readable descriptions
+
+For catalogs, plugin loaders and anything else that wants the API described without speaking
+MCP first, the repo carries three files:
+
+| File | What it is |
+|---|---|
+| [`tools.json`](tools.json) | The `tools/list` reply verbatim, plus the `serverInfo` from `initialize` |
+| [`openapi.json`](openapi.json) | OpenAPI 3.1 for the endpoint, with a typed request schema per tool |
+| [`.well-known/ai-plugin.json`](.well-known/ai-plugin.json) | Plugin manifest pointing at the OpenAPI document |
+
+The first two are generated from the live endpoint by `npm run discovery`, so they are a
+snapshot rather than a second source of truth: if they disagree with the server, the server is
+right and the fix is to rerun the script. `npm test` checks that the three files agree with each
+other.
+
 ## Limits
 
 Rate limited per IP. Read `X-RateLimit-Limit` and `X-RateLimit-Remaining` on the response rather
@@ -186,7 +217,7 @@ filing advice from an accountant.
 ## About this repository
 
 This repo is the public home of the server: this README, a copy of the published `server.json`
-registry manifest, and the stdio bridge described above. The calculators themselves run inside
+registry manifest, the machine-readable descriptions above, and the stdio bridge. The calculators themselves run inside
 the Octura Solutions website, whose source is private, so what you can build and run here is
 the bridge rather than the tools.
 

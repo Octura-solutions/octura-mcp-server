@@ -1,7 +1,7 @@
 # octura-mcp-server
 
 stdio bridge to the [Octura Solutions MCP server](https://octurasolutions.com/tools/mcp-server):
-24 deterministic ERP calculators covering Odoo implementation, migration and upgrade cost, ROI
+30 read-only tools: 25 deterministic ERP calculators covering Odoo implementation, migration and upgrade cost, ROI
 and total cost of ownership, US/Canada/EU sales tax and VAT, Canadian payroll source deductions,
 and inventory maths (reorder point, safety stock, EOQ, landed cost, OEE).
 

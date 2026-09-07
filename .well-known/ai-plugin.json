@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Octura Solutions Site Tools",
+  "name_for_model": "octura_site_tools",
+  "description_for_human": "Deterministic Odoo ERP calculators (implementation cost, ROI, TCO, sales tax, payroll, inventory maths) and Octura content lookups. No account needed.",
+  "description_for_model": "Model Context Protocol server over JSON-RPC 2.0 at POST https://octurasolutions.com/mcp. Use tools/list to discover the tools and tools/call to run one. Calculators are pure functions: same inputs, same outputs, no model in the loop. Every input has a default, so calling with {} returns a baseline. Results echo the normalized input actually used next to the result so numbers can be checked. Content tools (ask_octura, compare_odoo_vs, find_odoo_apps_for, get_odoo_pricing, get_partner_profile) return Octura pages, comparisons, app recommendations and pricing to cite. All tools are read-only. Cost models carry regional assumptions and are estimates, not quotes; tax and payroll figures are best-effort and not filing advice.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://raw.githubusercontent.com/Octura-solutions/octura-mcp-server/main/openapi.json",
+    "is_user_authenticated": false
+  },
+  "logo_url": "https://octurasolutions.com/android-chrome-512x512.png",
+  "contact_email": "curious@octurasolutions.com",
+  "legal_info_url": "https://octurasolutions.com/terms-and-conditions"
+}

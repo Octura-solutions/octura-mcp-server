@@ -1,7 +1,7 @@
 {
   "name": "octura-mcp-server",
   "version": "1.0.0",
-  "description": "stdio bridge to the Octura Solutions MCP server: 24 deterministic Odoo ERP calculators",
+  "description": "stdio bridge to the Octura Solutions MCP server: 30 deterministic Odoo ERP calculators and content tools",
   "type": "module",
   "bin": {
     "octura-mcp-server": "src/bridge.mjs"
@@ -9,13 +9,18 @@
   "main": "src/bridge.mjs",
   "files": [
     "src",
+    "scripts",
     "server.json",
+    "tools.json",
+    "openapi.json",
+    ".well-known",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "start": "node src/bridge.mjs",
-    "test": "node --test test/bridge.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "discovery": "node scripts/build-discovery.mjs"
   },
   "keywords": [
     "mcp",

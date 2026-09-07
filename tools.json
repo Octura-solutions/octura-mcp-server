@@ -1,0 +1,1357 @@
+{
+  "$comment": "Snapshot of the live tools/list and initialize replies. Regenerate with `npm run discovery`; do not edit by hand.",
+  "endpoint": "https://octurasolutions.com/mcp",
+  "transport": "streamable-http",
+  "protocolVersion": "2025-06-18",
+  "serverInfo": {
+    "name": "com.octurasolutions/site-tools",
+    "title": "Octura Solutions Site Tools",
+    "version": "1.0.0"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    }
+  },
+  "instructions": "Deterministic ERP calculators and estimators from Octura Solutions (Odoo implementation/migration/upgrade cost, ROI, TCO, odoo.conf tuning, EDI readiness, sales tax, payroll, inventory math). Every calculator clamps invalid input to safe defaults and returns the normalized input it actually used alongside the result. Content tools answer questions about Odoo and Octura: ask_octura retrieves relevant site pages to cite, compare_odoo_vs returns a head-to-head against any of 60 competitors, and get_odoo_pricing, find_odoo_apps_for and get_partner_profile return pricing, app recommendations and company facts. All tools are read-only.",
+  "tools": [
+    {
+      "name": "ask_octura",
+      "title": "Ask Octura (search the site)",
+      "description": "Retrieve the most relevant pages from octurasolutions.com (guides, Odoo vs X comparisons, Odoo app pages, pricing, partner info) for an Odoo or ERP question, so you can answer grounded in Octura content and cite the source URLs. Retrieval only; you compose the answer.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string",
+            "description": "The user question about Odoo, ERP, or Octura, in natural language."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Max sources to return (1 to 10, default 5).",
+            "minimum": 1,
+            "maximum": 10
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "canadian-payroll-source-deductions-calculator",
+      "title": "Canadian Payroll Deductions Calculator",
+      "description": "CPP, EI, and income tax source deductions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "grossPerPeriod": {
+            "type": "number",
+            "minimum": 0,
+            "default": 2000
+          },
+          "payFrequency": {
+            "type": "integer",
+            "enum": [
+              52,
+              26,
+              24,
+              12
+            ],
+            "default": 26
+          },
+          "province": {
+            "type": "string",
+            "enum": [
+              "AB",
+              "BC",
+              "MB",
+              "NB",
+              "NL",
+              "NS",
+              "NT",
+              "NU",
+              "ON",
+              "PE",
+              "QC",
+              "SK",
+              "YT"
+            ],
+            "default": "ON"
+          },
+          "cppExempt": {
+            "type": "boolean",
+            "default": false
+          },
+          "eiExempt": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "canadian-sales-tax-calculator",
+      "title": "Canadian Sales Tax Calculator",
+      "description": "GST, HST, PST, and QST for all provinces.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Pre-tax in add mode, tax-included total in extract mode (CAD).",
+            "default": 100
+          },
+          "province": {
+            "type": "string",
+            "enum": [
+              "AB",
+              "BC",
+              "MB",
+              "NB",
+              "NL",
+              "NS",
+              "NT",
+              "NU",
+              "ON",
+              "PE",
+              "QC",
+              "SK",
+              "YT"
+            ],
+            "default": "ON"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "add",
+              "extract"
+            ],
+            "default": "add"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "compare_odoo_vs",
+      "title": "Compare Odoo vs a competitor",
+      "description": "Return the Octura head-to-head comparison of Odoo against a named ERP or CRM competitor: verdict tally, feature-by-feature table, strengths on each side, best-for guidance, FAQ and the page URL. Covers 60 competitors.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "competitor": {
+            "type": "string",
+            "description": "Competitor name or slug, e.g. \"NetSuite\", \"Microsoft Dynamics 365\", \"ERPNext\", \"SAP Business One\", \"QuickBooks\", \"Zoho\"."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "economic-order-quantity-calculator",
+      "title": "EOQ Calculator",
+      "description": "Optimal order quantity to minimize cost.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "annualDemand": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 10000
+          },
+          "orderCost": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 50
+          },
+          "holdingCostPerUnit": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 2
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "erp-selection-tool",
+      "title": "ERP Selection Tool",
+      "description": "Score your best-fit ERP shortlist across 10 systems.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "industry": {
+            "type": "string",
+            "enum": [
+              "manufacturing",
+              "wholesale-distribution",
+              "retail",
+              "ecommerce",
+              "construction",
+              "professional-services",
+              "nonprofits",
+              "field-service",
+              "healthcare",
+              "real-estate",
+              "transportation",
+              "other"
+            ],
+            "default": "manufacturing"
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "micro",
+              "small",
+              "mid",
+              "large",
+              "enterprise"
+            ],
+            "default": "mid"
+          },
+          "deployment": {
+            "type": "string",
+            "enum": [
+              "cloud",
+              "either",
+              "onprem"
+            ],
+            "default": "either"
+          },
+          "budget": {
+            "type": "string",
+            "enum": [
+              "lean",
+              "moderate",
+              "enterprise"
+            ],
+            "default": "moderate"
+          },
+          "needs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "manufacturing-mrp",
+                "multi-entity",
+                "ecommerce",
+                "field-service",
+                "project-services",
+                "accounting-compliance",
+                "inventory-distribution",
+                "crm-sales"
+              ]
+            },
+            "default": [
+              "manufacturing-mrp",
+              "inventory-distribution",
+              "accounting-compliance"
+            ]
+          },
+          "incumbent": {
+            "type": "string",
+            "enum": [
+              "spreadsheets",
+              "quickbooks",
+              "xero",
+              "sage",
+              "netsuite",
+              "dynamics-365",
+              "zoho",
+              "sap",
+              "other",
+              "none"
+            ],
+            "default": "quickbooks"
+          },
+          "customization": {
+            "type": "string",
+            "enum": [
+              "turnkey",
+              "some",
+              "heavy"
+            ],
+            "default": "some"
+          },
+          "region": {
+            "type": "string",
+            "enum": [
+              "us",
+              "canada",
+              "france-eu",
+              "other"
+            ],
+            "default": "us"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "eu-vat-calculator",
+      "title": "EU VAT Calculator & Validator",
+      "description": "VAT rates by country plus VIES validation.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Net amount in add mode, gross (VAT-included) total in extract mode.",
+            "default": 100
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO alpha-2 country code (EU-27 + GB; GR for Greece).",
+            "default": "FR"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "add",
+              "extract"
+            ],
+            "default": "add"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "find_odoo_apps_for",
+      "title": "Find Odoo apps for a need",
+      "description": "Given a business need in plain language, return the most relevant Odoo apps and modules with their pillar and page URL, so you can recommend the right Odoo stack. Backed by the Octura Odoo app catalog.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "need": {
+            "type": "string",
+            "description": "A business need or goal, e.g. \"track leads and close deals\", \"manage inventory and warehouse\", \"run payroll\"."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_odoo_pricing",
+      "title": "Get Odoo pricing",
+      "description": "Return current Odoo license list pricing (Standard and Custom tiers, USD and CAD) and Odoo.sh hosting rates from the single Octura pricing source, plus links to the pricing page and cost calculators. Implementation is quoted per project.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_partner_profile",
+      "title": "Get Octura partner profile",
+      "description": "Return who Octura Solutions is: Official Odoo Partner status, regions served, services with URLs, website and contact details, so you can represent the company accurately.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "inventory-carrying-cost-calculator",
+      "title": "Inventory Carrying Cost Calculator",
+      "description": "Annual cost of holding inventory.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "avgInventoryValue": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 100000
+          },
+          "carryingRatePercent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 25
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "inventory-turnover-calculator",
+      "title": "Inventory Turnover Calculator",
+      "description": "Turnover ratio and days of inventory.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "annualCOGS": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 500000
+          },
+          "avgInventoryValue": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 100000
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "landed-cost-calculator",
+      "title": "Landed Cost Calculator",
+      "description": "True per-unit cost including freight and duty.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "productCost": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 10000
+          },
+          "freight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 1200
+          },
+          "customsDuty": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 650
+          },
+          "insurance": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 150
+          },
+          "otherFees": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 300
+          },
+          "quantity": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 500
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "margin-and-markup-calculator",
+      "title": "Margin & Markup Calculator",
+      "description": "Convert between margin, markup, and price.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "fromPrice",
+              "fromMargin"
+            ],
+            "default": "fromPrice"
+          },
+          "cost": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 60
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 100
+          },
+          "targetMarginPercent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 40
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-app-selector",
+      "title": "Odoo App Selector",
+      "description": "Find the Odoo apps your business needs.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "businessType": {
+            "type": "string",
+            "enum": [
+              "services",
+              "retail",
+              "manufacturing",
+              "wholesale"
+            ],
+            "default": "services"
+          },
+          "users": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 10
+          },
+          "needs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "sales",
+                "crm",
+                "ecommerce",
+                "pos",
+                "marketing",
+                "website",
+                "inventory",
+                "manufacturing",
+                "purchasing",
+                "project",
+                "fieldservice",
+                "accounting",
+                "subscriptions",
+                "hr",
+                "helpdesk",
+                "docsign",
+                "knowledge",
+                "custom"
+              ]
+            },
+            "default": [
+              "sales",
+              "crm",
+              "accounting"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-conf-tuner",
+      "title": "Odoo Worker & Memory Tuner",
+      "description": "Tune odoo.conf workers and memory limits.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "enum": [
+              15,
+              16,
+              17,
+              18,
+              19
+            ],
+            "default": 18
+          },
+          "profile": {
+            "type": "string",
+            "enum": [
+              "production",
+              "staging",
+              "dev"
+            ],
+            "default": "production"
+          },
+          "cpuCores": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 128,
+            "default": 4
+          },
+          "totalRamMb": {
+            "type": "integer",
+            "minimum": 512,
+            "maximum": 1048576,
+            "default": 8192
+          },
+          "concurrentUsers": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000,
+            "default": 25
+          },
+          "proxyMode": {
+            "type": "boolean",
+            "default": true
+          },
+          "sharedWithPostgres": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-edi-readiness-cost-estimator",
+      "title": "EDI Readiness Cost Estimator",
+      "description": "Estimate EDI integration cost in Odoo.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "retailers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "loblaws",
+                "sobeys",
+                "metro",
+                "walmart-canada",
+                "costco-canada",
+                "canadian-tire",
+                "couche-tard",
+                "home-depot-canada"
+              ]
+            },
+            "default": [
+              "loblaws"
+            ]
+          },
+          "volume": {
+            "type": "string",
+            "enum": [
+              "under500",
+              "500to2k",
+              "2kto10k",
+              "over10k"
+            ],
+            "default": "500to2k"
+          },
+          "system": {
+            "type": "string",
+            "enum": [
+              "odooLive",
+              "odooImpl",
+              "legacyErp",
+              "manual"
+            ],
+            "default": "odooLive"
+          },
+          "translator": {
+            "type": "string",
+            "enum": [
+              "sps",
+              "truecommerce",
+              "opentext",
+              "smallSpecialist",
+              "directAs2",
+              "undecided"
+            ],
+            "default": "undecided"
+          },
+          "catalogue832": {
+            "type": "boolean",
+            "default": false
+          },
+          "ssccLabelling": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-implementation-cost-calculator",
+      "title": "Implementation Cost Calculator",
+      "description": "Estimate your Odoo implementation budget.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "userCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "default": 25
+          },
+          "moduleCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 15,
+            "default": 5
+          },
+          "complexity": {
+            "type": "string",
+            "enum": [
+              "simple",
+              "moderate",
+              "complex"
+            ],
+            "default": "moderate"
+          },
+          "customization": {
+            "type": "string",
+            "enum": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "default": "light"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-migration-cost-calculator",
+      "title": "Migration Cost Calculator",
+      "description": "Estimate the cost to migrate to Odoo.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "spreadsheets",
+              "quickbooks",
+              "xero",
+              "sage50",
+              "sage100",
+              "sage300",
+              "zoho",
+              "dynamics365bc",
+              "netsuite",
+              "customdb",
+              "sapb1",
+              "saps4"
+            ],
+            "default": "netsuite"
+          },
+          "years": {
+            "type": "string",
+            "enum": [
+              "open",
+              "1-3",
+              "3-7",
+              "7+"
+            ],
+            "default": "3-7"
+          },
+          "volume": {
+            "type": "string",
+            "enum": [
+              "s",
+              "m",
+              "l",
+              "xl"
+            ],
+            "default": "m"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "clean",
+              "typical",
+              "messy"
+            ],
+            "default": "typical"
+          },
+          "integrations": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1-2",
+              "3-5",
+              "6+"
+            ],
+            "default": "1-2"
+          },
+          "customsToPort": {
+            "type": "string",
+            "enum": [
+              "none",
+              "1-3",
+              "4-10",
+              "10+"
+            ],
+            "default": "1-3"
+          },
+          "userCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "default": 25
+          },
+          "moduleCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 15,
+            "default": 5
+          },
+          "complexity": {
+            "type": "string",
+            "enum": [
+              "simple",
+              "moderate",
+              "complex"
+            ],
+            "default": "moderate"
+          },
+          "customization": {
+            "type": "string",
+            "enum": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "default": "light"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-project-rescue-risk-grader",
+      "title": "Project Rescue Risk Grader",
+      "description": "Grade how badly an in-flight Odoo implementation is going.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "goLiveSlips": {
+            "type": "string",
+            "enum": [
+              "none",
+              "one",
+              "twoPlus"
+            ],
+            "default": "none",
+            "description": "How many times the official go-live date has been pushed back."
+          },
+          "billingModel": {
+            "type": "string",
+            "enum": [
+              "fixedPrice",
+              "timeAndMaterialsUnder",
+              "timeAndMaterialsOver"
+            ],
+            "default": "fixedPrice",
+            "description": "How the current Odoo partner bills, and whether the original estimate has been exceeded."
+          },
+          "customWorkflows": {
+            "type": "string",
+            "enum": [
+              "mostlyStandard",
+              "customTested",
+              "bugsAfterDone"
+            ],
+            "default": "mostlyStandard",
+            "description": "Whether custom code is tested before handover or bugs surface in basic workflows after it is called done."
+          },
+          "rollbackPlan": {
+            "type": "string",
+            "enum": [
+              "documented",
+              "unsure",
+              "none"
+            ],
+            "default": "documented",
+            "description": "Whether a documented rollback plan for the data migration exists and has been seen."
+          },
+          "dayToDayContact": {
+            "type": "string",
+            "enum": [
+              "engineerWeekly",
+              "seniorScoper",
+              "accountManager",
+              "unknownManager"
+            ],
+            "default": "engineerWeekly",
+            "description": "Who runs the project day to day, and whether the people who scoped and sold the work are still involved. Replaces the earlier engineerAccess key, whose values are still accepted."
+          },
+          "teamConfidence": {
+            "type": "string",
+            "enum": [
+              "veryConfident",
+              "cautious",
+              "noTrust"
+            ],
+            "default": "veryConfident",
+            "description": "How much the operations and finance teams trust the system for day one."
+          },
+          "followUpCadence": {
+            "type": "string",
+            "enum": [
+              "weeklyWritten",
+              "adHoc",
+              "none"
+            ],
+            "default": "weeklyWritten",
+            "description": "Whether a written weekly status update against the plan actually arrives."
+          },
+          "ticketSystem": {
+            "type": "string",
+            "enum": [
+              "sharedTracker",
+              "partnerOnly",
+              "none"
+            ],
+            "default": "sharedTracker",
+            "description": "Whether bugs and change requests are tracked somewhere the client can see and comment."
+          },
+          "roadmapClarity": {
+            "type": "string",
+            "enum": [
+              "datedSignedOff",
+              "vague",
+              "none"
+            ],
+            "default": "datedSignedOff",
+            "description": "Whether a dated, signed-off roadmap of remaining milestones exists."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-roi-calculator",
+      "title": "Odoo ROI Calculator",
+      "description": "Estimate payback and multi-year ROI of Odoo.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "currentAnnualCost": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 60000
+          },
+          "odooAnnualCost": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 18000
+          },
+          "implementationCost": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 45000
+          },
+          "annualEfficiencySavings": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 30000
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-sh-pricing-calculator",
+      "title": "Odoo.sh Pricing Calculator",
+      "description": "Estimate your Odoo.sh hosting cost.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "enum": [
+              15,
+              16,
+              17,
+              18,
+              19
+            ],
+            "default": 18
+          },
+          "namedUsers": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "default": 25
+          },
+          "appsBand": {
+            "type": "string",
+            "enum": [
+              "small",
+              "medium",
+              "large",
+              "xlarge"
+            ],
+            "default": "medium"
+          },
+          "peakConcurrency": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2000,
+            "default": 30
+          },
+          "stagingBranches": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10,
+            "default": 1
+          },
+          "workerChoice": {
+            "enum": [
+              "auto",
+              1,
+              2,
+              3,
+              4,
+              6,
+              8
+            ],
+            "default": "auto"
+          },
+          "billing": {
+            "type": "string",
+            "enum": [
+              "monthly",
+              "annual"
+            ],
+            "default": "monthly"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-stack-savings-calculator",
+      "title": "Stack Savings Calculator",
+      "description": "See what consolidating tools into Odoo saves.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 25
+          },
+          "selected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Competitor tool slugs being consolidated; unknown slugs are ignored.",
+            "default": [
+              "crm",
+              "accounting",
+              "marketing",
+              "ecommerce"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-total-cost-of-ownership-calculator",
+      "title": "Total Cost of Ownership Calculator",
+      "description": "Model the multi-year total cost of Odoo.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "default": 25
+          },
+          "plan": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "custom"
+            ],
+            "default": "custom"
+          },
+          "hosting": {
+            "type": "string",
+            "enum": [
+              "odoosh-standard",
+              "odoosh-custom",
+              "selfhost",
+              "octura-pro"
+            ],
+            "default": "odoosh-standard"
+          },
+          "implScale": {
+            "type": "string",
+            "enum": [
+              "starter",
+              "growth",
+              "enterprise"
+            ],
+            "default": "growth"
+          },
+          "support": {
+            "type": "string",
+            "enum": [
+              "none",
+              "essential",
+              "pro"
+            ],
+            "default": "essential"
+          },
+          "training": {
+            "type": "string",
+            "enum": [
+              "none",
+              "essentials",
+              "advanced",
+              "full"
+            ],
+            "default": "essentials"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "odoo-upgrade-cost-calculator",
+      "title": "Upgrade Cost Calculator",
+      "description": "Budget an Odoo version upgrade.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "sourceVersion": {
+            "type": "integer",
+            "enum": [
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ],
+            "default": 14
+          },
+          "targetVersion": {
+            "type": "integer",
+            "enum": [
+              17,
+              18,
+              19
+            ],
+            "default": 19
+          },
+          "customModules": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1-3",
+              "4-10",
+              "10+"
+            ],
+            "default": "1-3"
+          },
+          "ocaModules": {
+            "type": "string",
+            "enum": [
+              "none",
+              "few",
+              "many"
+            ],
+            "default": "few"
+          },
+          "dbSize": {
+            "type": "string",
+            "enum": [
+              "s",
+              "m",
+              "l",
+              "xl"
+            ],
+            "default": "m"
+          },
+          "downtime": {
+            "type": "string",
+            "enum": [
+              "weekend",
+              "overnight",
+              "near-zero"
+            ],
+            "default": "weekend"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "oee-calculator",
+      "title": "OEE Calculator",
+      "description": "Overall Equipment Effectiveness for production.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "plannedProductionTimeMin": {
+            "type": "number",
+            "minimum": 0,
+            "default": 480
+          },
+          "downtimeMin": {
+            "type": "number",
+            "minimum": 0,
+            "default": 47
+          },
+          "idealCycleTimeSec": {
+            "type": "number",
+            "minimum": 0,
+            "default": 1.5
+          },
+          "totalUnits": {
+            "type": "number",
+            "minimum": 0,
+            "default": 16000
+          },
+          "goodUnits": {
+            "type": "number",
+            "minimum": 0,
+            "default": 15500
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "reorder-point-calculator",
+      "title": "Reorder Point Calculator",
+      "description": "When to reorder, with safety stock.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "avgDailyUsage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 20
+          },
+          "leadTimeDays": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 7
+          },
+          "safetyStock": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "safety-stock-calculator",
+      "title": "Safety Stock Calculator",
+      "description": "Buffer stock for demand and lead-time swings.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "maxDailyUsage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 30
+          },
+          "maxLeadTimeDays": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 10
+          },
+          "avgDailyUsage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 20
+          },
+          "avgLeadTimeDays": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "default": 7
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "us-sales-tax-calculator",
+      "title": "US Sales Tax Calculator",
+      "description": "State sales tax for all 50 states and DC.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Pre-tax amount in add mode, tax-included total in extract mode (USD).",
+            "default": 100
+          },
+          "state": {
+            "type": "string",
+            "description": "Two-letter US state code (e.g. CA, TX, NY).",
+            "default": "CA"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "add",
+              "extract"
+            ],
+            "default": "add"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "us-sales-tax-nexus-checker",
+      "title": "US Economic Nexus Checker",
+      "description": "See where you must collect US sales tax.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "description": "Two-letter US state code (e.g. CA, TX, NY).",
+            "default": "CA"
+          },
+          "sales": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Annual sales into the state, USD.",
+            "default": 100000
+          },
+          "transactions": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Annual transaction count into the state.",
+            "default": 200
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ]
+}

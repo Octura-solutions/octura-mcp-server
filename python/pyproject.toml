@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "octura-mcp-server"
 version = "1.0.0"
-description = "stdio bridge to the Octura Solutions MCP server: 24 deterministic Odoo ERP calculators"
+description = "stdio bridge to the Octura Solutions MCP server: 30 deterministic Odoo ERP calculators and content tools"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
